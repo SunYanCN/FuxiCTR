@@ -176,6 +176,8 @@ class FeatureProcessor(object):
             self.feature_map.features[name]["embedding_dim"] = col["embedding_dim"]
         if "emb_output_dim" in col:
             self.feature_map.features[name]["emb_output_dim"] = col["emb_output_dim"]
+        if "pretrain_dim" in col:
+            self.feature_map.features[name]["pretrain_dim"] = col["pretrain_dim"]
         if "category_processor" not in col:
             tokenizer = Tokenizer(min_freq=min_categr_count, 
                                   na_value=col.get("fill_na", ""), 
@@ -194,6 +196,7 @@ class FeatureProcessor(object):
                     logging.info("Loading pretrained embedding: " + name)
                     self.feature_map.features[name]["pretrained_emb"] = "pretrained_emb.h5"
                     self.feature_map.features[name]["freeze_emb"] = col.get("freeze_emb", True)
+                    self.feature_map.features[name]["pretrain_usage"] = col.get("pretrain_usage", "init")
                     tokenizer.load_pretrained_embedding(name,
                                                         self.dtype_dict[name],
                                                         col["pretrained_emb"], 
@@ -236,6 +239,8 @@ class FeatureProcessor(object):
             self.feature_map.features[name]["embedding_dim"] = col["embedding_dim"]
         if "emb_output_dim" in col:
             self.feature_map.features[name]["emb_output_dim"] = col["emb_output_dim"]
+        if "pretrain_dim" in col:
+            self.feature_map.features[name]["pretrain_dim"] = col["pretrain_dim"]
         splitter = col.get("splitter")
         na_value = col.get("fill_na", "")
         max_len = col.get("max_len", 0)
@@ -257,6 +262,7 @@ class FeatureProcessor(object):
                 logging.info("Loading pretrained embedding: " + name)
                 self.feature_map.features[name]["pretrained_emb"] = "pretrained_emb.h5"
                 self.feature_map.features[name]["freeze_emb"] = col.get("freeze_emb", True)
+                self.feature_map.features[name]["pretrain_usage"] = col.get("pretrain_usage", "init")
                 tokenizer.load_pretrained_embedding(name,
                                                     self.dtype_dict[name],
                                                     col["pretrained_emb"], 
